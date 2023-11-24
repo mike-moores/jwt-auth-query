@@ -1,6 +1,7 @@
 import express from 'express'
 import { FruitData } from '../../models/fruit.ts'
 import { JwtRequest } from '../auth0.ts'
+import checkJwt from '../auth0.ts'
 
 import * as db from '../db/fruits.ts'
 
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
 
 // TODO: use checkJwt as middleware
 // POST /api/v1/fruits
-router.post('/', async (req: JwtRequest, res) => {
+router.post('/', checkJwt, async (req: JwtRequest, res) => {
   const { fruit } = req.body as { fruit: FruitData }
   const auth0Id = req.auth?.sub
 
@@ -47,7 +48,7 @@ router.post('/', async (req: JwtRequest, res) => {
 
 // TODO: use checkJwt as middleware
 // PUT /api/v1/fruits
-router.put('/:id', async (req: JwtRequest, res) => {
+router.put('/:id', checkJwt, async (req: JwtRequest, res) => {
   const { fruit } = req.body as { fruit: FruitData }
   const auth0Id = req.auth?.sub
 
@@ -83,7 +84,7 @@ router.put('/:id', async (req: JwtRequest, res) => {
 
 // TODO: use checkJwt as middleware
 // DELETE /api/v1/fruits
-router.delete('/:id', async (req: JwtRequest, res) => {
+router.delete('/:id', checkJwt, async (req: JwtRequest, res) => {
   const id = Number(req.params.id)
   const auth0Id = req.auth?.sub
 
